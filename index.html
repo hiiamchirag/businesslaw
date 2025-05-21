@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LegalVault - Law Management with Icons</title>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f0f4f8;
+      color: #222;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    header {
+      background: linear-gradient(90deg, #004a99, #0073e6);
+      color: white;
+      padding: 18px 20px;
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background: #0073e6;
+      box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+      position: sticky;
+      top: 56px;
+      z-index: 900;
+    }
+
+    nav button {
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 14px 0;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      flex: 1;
+      transition: background-color 0.3s ease;
+      border-bottom: 3px solid transparent;
+    }
+
+    nav button:hover, nav button.active {
+      background-color: #005bb5;
+      border-bottom: 3px solid #ffc107;
+    }
+
+    .section {
+      display: none;
+      max-width: 600px;
+      margin: 25px auto 40px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgb(0 115 230 / 0.3);
+      padding: 30px 25px;
+      transition: all 0.3s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h2 {
+      color: #004a99;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.03em;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 6px;
+      font-weight: 600;
+      font-size: 14.5px;
+      color: #004a99;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border: 1.8px solid #cfd9e7;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: border-color 0.3s ease;
+      font-family: inherit;
+      background: #f9fbff;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: #0073e6;
+      outline: none;
+      background: #e9f0ff;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button.action {
+      background: #0073e6;
+      color: white;
+      border: none;
+      padding: 14px 22px;
+      font-size: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 14px rgb(0 115 230 / 0.35);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    button.action:hover {
+      background: #005bb5;
+      box-shadow: 0 8px 18px rgb(0 91 181 / 0.55);
+    }
+
+    .result {
+      margin-top: 22px;
+      background: #dbe9ff;
+      padding: 20px 18px;
+      border-left: 6px solid #0073e6;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.45;
+      color: #0b2e70;
+      user-select: text;
+      box-shadow: 0 3px 7px rgb(0 115 230 / 0.15);
+    }
+
+    .result p {
+      margin: 6px 0;
+    }
+
+    .material-icons {
+      font-size: 22px;
+      vertical-align: middle;
+      user-select: none;
+    }
+
+    .act-icon {
+      font-size: 28px;
+      margin-right: 8px;
+      color: #0073e6;
+    }
+
+    /* Responsive & mobile-friendly */
+    @media (max-width: 600px) {
+      .section {
+        margin: 20px 15px 35px;
+        padding: 25px 20px;
+      }
+
+      nav button {
+        font-size: 14px;
+        padding: 12px 0;
+      }
+
+      header {
+        font-size: 1.4rem;
+        padding: 15px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="material-icons">gavel</span>
+    LegalVault - Law Management System
+  </header>
+
+  <nav>
+    <button id="btn-upload" onclick="showSection('upload')" class="active">
+      <span class="material-icons">upload_file</span> Upload
+    </button>
+    <button id="btn-amend" onclick="showSection('amend')">
+      <span class="material-icons">build</span> Amend
+    </button>
+    <button id="btn-search" onclick="showSection('search')">
+      <span class="material-icons">search</span> Search
+    </button>
+    <button id="btn-delete" onclick="showSection('delete')">
+      <span class="material-icons">delete</span> Delete
+    </button>
+  </nav>
+
+  <!-- Upload Section -->
+  <div id="upload" class="section active">
+    <h2><span class="material-icons">upload_file</span> Upload New Act + Section</h2>
+    <label><span class="material-icons">account_balance</span> Act Name</label>
+    <input type="text" id="uploadAct" placeholder="Enter Act Name (e.g. TCA)" />
+    <label><span class="material-icons">numbers</span> Section Number</label>
+    <input type="text" id="uploadSection" placeholder="Enter Section Number" />
+    <label><span class="material-icons">title</span> Section Title</label>
+    <input type="text" id="uploadTitle" placeholder="Enter Section Title" />
+    <label><span class="material-icons">description</span> Description</label>
+    <textarea id="uploadDescription" placeholder="Enter Section Description"></textarea>
+    <button class="action" onclick="uploadNew()">
+      <span class="material-icons">upload</span> Upload
+    </button>
+  </div>
+
+  <!-- Amend Section -->
+  <div id="amend" class="section">
+    <h2><span class="material-icons">build</span> Add Section to Existing Act</h2>
+    <label><span class="material-icons">account_balance</span> Select Act</label>
+    <select id="amendAct"></select>
+    <label><span class="material-icons">numbers</span> New Section Number</label>
+    <input type="text" id="amendSection" placeholder="Enter New Section Number" />
+    <label><span class="material-icons">title</span> Section Title</label>
+    <input type="text" id="amendTitle" placeholder="Enter Section Title" />
+    <label><span class="material-icons">description</span> Description</label>
+    <textarea id="amendDescription" placeholder="Enter Section Description"></textarea>
+    <button class="action" onclick="amendAct()">
+      <span class="material-icons">add</span> Add Section
+    </button>
+  </div>
+
+  <!-- Search Section -->
+  <div id="search" class="section">
+    <h2><span class="material-icons">search</span> Search Section</h2>
+    <label><span class="material-icons">account_balance</span> Select Act</label>
+    <select id="searchAct" onchange="updateSearchSections()"></select>
+    <label><span class="material-icons">numbers</span> Select Section</label>
+    <select id="searchSection"></select>
+    <button class="action" onclick="search()">
+      <span class="material-icons">search</span> Search
+    </button>
+    <div id="searchResult" class="result"></div>
+  </div>
+
+  <!-- Delete Section -->
+  <div id="delete" class="section">
+    <h2><span class="material-icons">delete</span> Delete Section</h2>
+    <label><span class="material-icons">account_balance</span> Select Act</label>
+    <select id="deleteAct" onchange="updateDeleteSections()"></select>
+    <label><span class="material-icons">numbers</span> Select Section</label>
+    <select id="deleteSection"></select>
+    <button class="action" onclick="deleteSection()">
+      <span class="material-icons">delete_forever</span> Delete
+    </button>
+  </div>
+
+  <script>
+    // Map of keywords to Material Icon names
+    const actIconMap = {
+      "TCA": "business",
+      "Companies Act": "business",
+      "IPC": "gavel",
+      "Penal Code": "gavel",
+      "CrPC": "gavel",
+      "Income Tax": "account_balance_wallet",
+      "IT Act": "account_balance_wallet",
+      "GST": "receipt_long",
+      "Consumer Protection": "support_agent",
+      "Contract": "description",
+      "Labour": "work",
+      "Environment": "eco",
+      "Property": "home",
+      "Evidence": "verified_user",
+    };
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      // Update active button style
+      document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`nav button#btn-${id}`).classList.add('active');
+    }
+
+    function getData() {
+      return JSON.parse(localStorage.getItem("lawData") || "[]");
+    }
+
+    function saveData(data) {
+      localStorage.setItem("lawData", JSON.stringify(data));
+    }
+
+    function getIconForAct(actName) {
+      if (!actName) return "gavel";
+      actName = actName.toLowerCase();
+      for (const key in actIconMap) {
+        if (key.toLowerCase() === actName) return actIconMap[key];
+      }
+      for (const key in actIconMap) {
+        if (actName.includes(key.toLowerCase())) return actIconMap[key];
+      }
+      return "gavel";
+    }
+
+    // Upload New Section
+    function uploadNew() {
+      const act = document.getElementById("uploadAct").value.trim();
+      const section = document.getElementById("uploadSection").value.trim();
+      const title = document.getElementById("uploadTitle").value.trim();
+      const desc = document.getElementById("uploadDescription").value.trim();
+
+      if (!act || !section || !title || !desc) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      let data = getData();
+      if (data.some(item => item.act === act && item.section === section)) {
+        alert("This section already exists.");
+        return;
+      }
+
+      data.push({ act, section, title, description: desc });
+      saveData(data);
+      alert("Uploaded successfully.");
+      clearInputs();
+      refreshDropdowns();
+    }
+
+    // Amend Act with new Section
+    function amendAct() {
+      const act = document.getElementById("amendAct").value;
+      const section = document.getElementById("amendSection").value.trim();
+      const title = document.getElementById("amendTitle").value.trim();
+      const desc = document.getElementById("amendDescription").value.trim();
+
+      if (!act || !section || !title || !desc) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      let data = getData();
+      if (data.some(item => item.act === act && item.section === section)) {
+        alert("Section already exists under this act.");
+        return;
+      }
+
+      data.push({ act, section, title, description: desc });
+      saveData(data);
+      alert("Section added successfully.");
+      clearInputs();
+      refreshDropdowns();
+    }
+
+    // Search Section
+    function search() {
+      const act = document.getElementById("searchAct").value;
+      const section = document.getElementById("searchSection").value;
+      const resultBox = document.getElementById("searchResult");
+
+      const data = getData();
+      const match = data.find(item => item.act === act && item.section === section);
+
+      if (match) {
+        const iconName = getIconForAct(match.act);
+        resultBox.innerHTML = `
+          <p><span class="material-icons act-icon">${iconName}</span><strong>${match.act} - Section ${match.section}</strong></p>
+          <p><em>${match.title}</em></p>
+          <p>${match.description}</p>
+        `;
+      } else {
+        resultBox.innerHTML = `<p>No data found.</p>`;
+      }
+    }
+
+    // Update sections for Search dropdown
+    function updateSearchSections() {
+      const selectedAct = document.getElementById("searchAct").value;
+      const sectionDropdown = document.getElementById("searchSection");
+      const data = getData().filter(item => item.act === selectedAct);
+
+      sectionDropdown.innerHTML = `<option value="">-- Select Section --</option>`;
+      [...new Set(data.map(item => item.section))].forEach(section => {
+        sectionDropdown.innerHTML += `<option value="${section}">${section}</option>`;
+      });
+    }
+
+    // Update sections for Delete dropdown
+    function updateDeleteSections() {
+      const selectedAct = document.getElementById("deleteAct").value;
+      const sectionDropdown = document.getElementById("deleteSection");
+      const data = getData().filter(item => item.act === selectedAct);
+
+      sectionDropdown.innerHTML = `<option value="">-- Select Section --</option>`;
+      [...new Set(data.map(item => item.section))].forEach(section => {
+        sectionDropdown.innerHTML += `<option value="${section}">${section}</option>`;
+      });
+    }
+
+    // Delete Section Functionality
+    function deleteSection() {
+      const act = document.getElementById("deleteAct").value;
+      const section = document.getElementById("deleteSection").value;
+
+      if (!act) {
+        alert("Please select an Act.");
+        return;
+      }
+      if (!section) {
+        alert("Please select a Section to delete.");
+        return;
+      }
+
+      let data = getData();
+      const index = data.findIndex(item => item.act === act && item.section === section);
+
+      if (index === -1) {
+        alert("Section not found.");
+        return;
+      }
+
+      if (confirm(`Are you sure you want to delete ${act} - Section ${section}? This action cannot be undone.`)) {
+        data.splice(index, 1);
+        saveData(data);
+        alert("Section deleted successfully.");
+        refreshDropdowns();
+        // Clear selections after delete
+        document.getElementById("deleteSection").innerHTML = `<option value="">-- Select Section --</option>`;
+      }
+    }
+
+    // Clear all inputs
+    function clearInputs() {
+      document.querySelectorAll('input[type="text"], textarea').forEach(input => input.value = '');
+    }
+
+    // Refresh all dropdowns with latest data
+    function refreshDropdowns() {
+      const data = getData();
+      const acts = [...new Set(data.map(item => item.act))].sort();
+
+      const amendAct = document.getElementById("amendAct");
+      const searchAct = document.getElementById("searchAct");
+      const deleteAct = document.getElementById("deleteAct");
+
+      [amendAct, searchAct, deleteAct].forEach(select => {
+        select.innerHTML = `<option value="">-- Select Act --</option>`;
+        acts.forEach(act => {
+          select.innerHTML += `<option value="${act}">${act}</option>`;
+        });
+      });
+
+      // Update dependent sections for Search and Delete
+      updateSearchSections();
+      updateDeleteSections();
+    }
+
+    // On load, populate dropdowns
+    window.onload = () => {
+      refreshDropdowns();
+    }
+  </script>
+</body>
+</html>
